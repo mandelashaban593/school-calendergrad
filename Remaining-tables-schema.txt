@@ -1,0 +1,104 @@
+Sure, I can outline a basic database schema for managing midterm and final term examinations using Laravel, assuming each class (grade level) has subjects Math, Social Studies (SST), Science, and English. Here's a simplified structure:
+Database Tables
+
+    Classes
+        This table stores information about each class or grade level.
+
+    php
+
+Schema::create('classes', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    // Add any other relevant fields like teacher_id, school_id, etc.
+    $table->timestamps();
+});
+
+Subjects
+
+    This table stores information about subjects taught in the school.
+
+php
+
+Schema::create('subjects', function (Blueprint $table) {
+    $table->id();
+    $table->string('name');
+    // Add any other relevant fields like description, etc.
+    $table->timestamps();
+});
+
+Exams
+
+    This table stores information about each exam (midterm or final).
+
+php
+
+Schema::create('exams', function (Blueprint $table) {
+    $table->id();
+    $table->string('name'); // Midterm, Final, etc.
+    $table->dateTime('exam_date');
+    // Add any other relevant fields like class_id, etc.
+    $table->timestamps();
+});
+
+Exam_Scores
+
+    This table stores the scores of students for each exam.
+
+php
+
+Schema::create('exam_scores', function (Blueprint $table) {
+    $table->id();
+    $table->unsignedBigInteger('exam_id');
+    $table->unsignedBigInteger('student_id');
+    $table->unsignedBigInteger('subject_id');
+    $table->decimal('score', 5, 2);
+    // Add any other relevant fields like remarks, etc.
+    $table->timestamps();
+
+    // Foreign key constraints
+    $table->foreign('exam_id')->references('id')->on('exams')->onDelete('cascade');
+    $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+    $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
+});
+
+Students
+
+    This table stores information about students.
+
+php
+
+    Schema::create('students', function (Blueprint $table) {
+        $table->id();
+        $table->string('name');
+        // Add any other relevant fields like class_id, dob, etc.
+        $table->timestamps();
+    });
+
+Relationships
+
+    Class-Subject Relationship: Each class can have multiple subjects, and each subject can belong to multiple classes. This is typically managed through a pivot table (class_subject).
+
+    Exam-ExamScores Relationship: Each exam has multiple scores (one for each student and subject).
+
+    Student-ExamScores Relationship: Each student has multiple exam scores.
+
+Laravel Models
+
+You would define models for each of these tables in Laravel (Class, Subject, Exam, ExamScore, Student) and define relationships using Eloquent ORM.
+Example Queries
+
+    Retrieve all exams for a class:
+
+    php
+
+$exams = Exam::where('class_id', $class_id)->get();
+
+Retrieve scores for a specific student in a specific exam:
+
+php
+
+    $scores = ExamScore::where('exam_id', $exam_id)
+                       ->where('student_id', $student_id)
+                       ->get();
+
+This structure should give you a good starting point to manage midterm and final term examinations for a school, with specific subjects and classes, using Laravel's Eloquent ORM for database interactions. Adjust fields and relationships based on additional requirements or specific business rules of your application.
