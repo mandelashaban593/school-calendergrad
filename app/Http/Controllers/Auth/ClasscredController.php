@@ -27,13 +27,13 @@ class ClasscredController extends Controller
 
     public function getClassNames(Request $request)
     {
-        // Fetch class names from the database
+        // Fetch class names from the database using pluck('name')
         $classNames = ClassModel::pluck('name');
-
+    
         // Return the class names as JSON response
-        return response()->json(['classNames' => $classNames]);
+        return response()->json($classNames);
     }
-
+    
     public function getClasses()
     {
         $subjects = ClassModel::all(); // Fetch all subjects from database
