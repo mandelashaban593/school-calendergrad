@@ -115,7 +115,21 @@ class LessonController extends Controller
     {
         $perPage = $request->input('per_page', 5); // Default to 5 records per page
         $lessons = Lesson::paginate($perPage);
+        \Log::info('Lesson list retrieved: ' . $lessons);
 
         return response()->json($lessons);
     }
+
+
+    public function lesscalendlist()
+    {
+        $lessons = Lesson::all(); // Fetch all subjects from database
+        \Log::info('Lesson list retrieved: ' . $lessons);
+
+        return response()->json($lessons);
+    }
+   
+
+
+    
 }

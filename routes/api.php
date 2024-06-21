@@ -11,6 +11,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamScoreController;
 use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ClassController;
 
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -23,6 +24,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/classcred', [ClasscredController::class, 'classcred']); // Define a POST route for saving class data
 Route::post('/lesson', [LessonController::class, 'lesson']);
 Route::get('/lessonlist', [LessonController::class, 'lessonlist']);
+Route::get('/lesscalendlist', [LessonController::class, 'lesscalendlist']);
 Route::delete('/lesson/{id}', [LessonController::class, 'deleteLesson']);
 Route::get('/get-class-names', [ClasscredController::class, 'getClassNames']);
 Route::get('/classes', [ClasscredController::class, 'getClasses']);
@@ -60,6 +62,11 @@ Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance', [AttendanceController::class, 'store']);
 Route::put('/attendance/{id}', [AttendanceController::class, 'update']);
 Route::delete('/attendance/{id}', [AttendanceController::class, 'destroy']);
+
+Route::get('/classes', [ClassController::class, 'index']);
+Route::post('/classes', [ClassController::class, 'store']);
+Route::put('/classes/{classModel}', [ClassController::class, 'update']);
+Route::delete('/classes/{classModel}', [ClassController::class, 'destroy']);
 
 
 
