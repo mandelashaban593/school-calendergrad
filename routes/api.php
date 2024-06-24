@@ -22,22 +22,23 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/classcred', [ClasscredController::class, 'classcred']); // Define a POST route for saving class data
-Route::post('/lesson', [LessonController::class, 'lesson']);
+Route::post('/updatelesson', [LessonController::class, 'updatelesson']);
+Route::post('/savelesson', [LessonController::class, 'savelesson']);
 Route::get('/lessonlist', [LessonController::class, 'lessonlist']);
 Route::get('/lesscalendlist', [LessonController::class, 'lesscalendlist']);
 Route::delete('/lesson/{id}', [LessonController::class, 'deleteLesson']);
+Route::get('/get-lesson/{id}', [LessonController::class, 'getLesson']);
+
 Route::get('/get-class-names', [ClasscredController::class, 'getClassNames']);
 Route::get('/classes', [ClasscredController::class, 'getClasses']);
 Route::get('/classesDetail/{classId}', [ClasscredController::class, 'classesDetail']);
-
-
-
 Route::post('/users', [UserController::class, 'users']);
 Route::get('/users', [UserController::class, 'index']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::get('/users', [UserController::class, 'students']);
 Route::get('/studentsDetail/{studentId}', [UserController::class, 'studentsDetail']);
+Route::get('/get-teachers', [UserController::class, 'getTeachers']);
 
 Route::post('/subjects', [SubjectController::class, 'store']);
 Route::get('/subjects', [SubjectController::class, 'index']);
@@ -57,6 +58,7 @@ Route::post('/exam-scores', [ExamScoreController::class, 'store']);
 Route::get('/exam-scores', [ExamScoreController::class, 'index']);
 Route::put('/exam-scores/{id}', [ExamScoreController::class, 'update']);
 Route::delete('/exam-scores/{id}', [ExamScoreController::class, 'destroy']);
+Route::post('/generate-report', [ExamScoreController::class, 'generateReport']);
 
 Route::get('/attendance', [AttendanceController::class, 'index']);
 Route::post('/attendance', [AttendanceController::class, 'store']);

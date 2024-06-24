@@ -95,6 +95,16 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function getTeachers(Request $request)
+    {
+        $role = $request->get('role', ''); // Get the 'role' query parameter
+
+        // Query users based on role
+        $users = User::where('role', $role)->get();
+
+        return response()->json($users);
+    }
+
 
     
 
