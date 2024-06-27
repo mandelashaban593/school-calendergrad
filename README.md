@@ -1,8 +1,11 @@
 ## SCHOOL CALENDER IN REACT NEXTJS AND LARAVEL BACKEND
 
 School Calendar in React Next.js and Laravel Backend
+
 Installation Instructions
+
 Clone the Repository
+
 git clone https://github.com/mandelashaban593/school-calendergradFrontEnd
 git clone https://github.com/mandelashaban593/school-calendergradBackend
 
