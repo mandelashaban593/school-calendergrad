@@ -38,6 +38,7 @@ class ClasscredController extends Controller
     {
         // Fetch class names with both id and name columns
         $classNames = ClassModel::select('id', 'name')->get();
+        \Log::info('Classes details: ' . $classNames);
         
         // Return the class names as JSON response
         return response()->json($classNames);

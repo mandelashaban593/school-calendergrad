@@ -43,6 +43,16 @@ php artisan make:factory UserFactory --model=User  - Create User factory
 php artisan make:seeder UsersTableSeeder  - create seeder class
 php artisan db:seed --class=UsersTableSeeder - execute to populate the db table called users
 
+Login credentials
+    Admin
+	Username daddyshaban593@gmail.com  or mandelashaban593@gmail.com
+	password simple100
+	
+
+	Teacher 
+	Username shabanmandela593@gmail.com 
+	password simple100
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;

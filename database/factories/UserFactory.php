@@ -22,11 +22,13 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $password = $this->faker->unique()->password(8); // Generate a unique password
+
         return [
             'name' => $this->faker->name,
             'email' => $this->faker->unique()->safeEmail,
             'username' => $this->faker->userName,
-            'password' => bcrypt('password'), // You might want to use a better method for generating passwords
+            'password' => $password,
             'role' => $this->faker->randomElement(['student', 'teacher', 'admin']),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,

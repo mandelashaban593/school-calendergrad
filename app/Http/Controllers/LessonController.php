@@ -28,14 +28,26 @@ public function savelesson(Request $request)
     $weekday = Carbon::parse($request->input('weekday'))->format('Y-m-d');
     $start_time = Carbon::parse($request->input('start_time'))->format('H:i:s');
     $end_time = Carbon::parse($request->input('end_time'))->format('H:i:s');
-    $subjectId = $request->input('subject');
-    $teacherId = $request->input('teacher');
+    $subjectId = $request->input('subject_id');
+    $teacherId = $request->input('teacher_id');
     $room = $request->input('room');
     $school_year = $request->input('school_year');
     $term = $request->input('term');
-    $schclassId = $request->input('schclass');
+    $schclassId = $request->input('class_id');
     $class_size = $request->input('class_size');
 
+    // title: editLesson.title,
+    // description: editLesson.description,
+    // class_id: editLesson.class_id,
+    // subject_id: editLesson.subject_id,
+    // teacher_id: editLesson.teacher_id,
+    // room: editLesson.room,
+    // weekday: editLesson.weekday,
+    // start_time: editLesson.start_time,
+    // end_time: editLesson.end_time,
+    // term: editLesson.term,
+    // school_year: editLesson.school_year,
+    // class_size: editLesson.class_size,
     
     // Check if there is an ID in the request to determine if it's an edit or add operation
     $lessonId = $request->input('id');
@@ -111,12 +123,12 @@ public function updatelesson(Request $request)
     $weekday = Carbon::parse($request->input('weekday'))->format('Y-m-d');
     $start_time = Carbon::parse($request->input('start_time'))->format('H:i:s');
     $end_time = Carbon::parse($request->input('end_time'))->format('H:i:s');
-    $subjectId = $request->input('subject');
-    $teacherId = $request->input('teacher');
+    $subjectId = $request->input('subject_id');
+    $teacherId = $request->input('teacher_id');
     $room = $request->input('room');
     $school_year = $request->input('school_year');
     $term = $request->input('term');
-    $schclassId = $request->input('schclass');
+    $schclassId = $request->input('class_id');
     $class_size = $request->input('class_size');
 
     
@@ -198,26 +210,26 @@ public function updatelesson(Request $request)
 
 
     public function lessonlist(Request $request)
-    {
-        $perPage = $request->input('per_page', 5); // Default to 5 records per page
-        $lessons = Lesson::paginate($perPage);
-        \Log::info('Lesson list retrieved: ' . $lessons);
+{
+    $perPage = $request->input('per_page', 5); // Default to 5 records per page
+    $lessons = Lesson::paginate($perPage);
 
-        return response()->json($lessons);
-    }
+    // Log the query for debugging
+    \Log::info('Lesson list retrieved: ' . $lessons->toJson());
 
+    return response()->json($lessons);
+}
+
+    public function lesscalendlist(Request $request)
+{
     
-    
+    $perPage = $request->input('per_page', 10); // Default to 5 records per page
+    $lessons = Lesson::paginate($perPage);
+   // \Log::info('Lesson list  calender retrieved: ' . $lessons->toJson());
 
+    return response()->json($lessons);
+}
 
-
-    public function lesscalendlist()
-    {
-        $lessons = Lesson::all(); // Fetch all subjects from database
-        \Log::info('Lesson list retrieved: ' . $lessons);
-
-        return response()->json($lessons);
-    }
 
     public function getLesson($id)
     {
