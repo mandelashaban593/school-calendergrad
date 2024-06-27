@@ -55,6 +55,8 @@ php artisan db:seed --class=LessonsTableSeeder
 
 Create factory:
 php artisan make:factory UserFactory --model=User
+php artisan db:seed --class=UsersTableSeeder
+php artisan db:seed --class=LessonsTableSeeder
 
 Create controller:
 php artisan make:controller UserController
