@@ -22,13 +22,27 @@ class UserFactory extends Factory
      */
     public function definition()
     {
-        $password = $this->faker->unique()->password(8); // Generate a unique password
+        $password = $this->faker->password(8); // Generate a password
+        
+        $email = $this->faker->unique()->safeEmail; // Generate a unique email
+        $username = $this->faker->unique()->userName; // Generate a unique username
+
+        // Check if username exists, retry until unique
+        while (User::where('username', $username)->exists()) {
+
+            $username = $this->faker->userName;
+        }
+
+        // Check if email exists, retry until unique
+        while (User::where('email', $email)->exists()) {
+            $email = $this->faker->safeEmail;
+        }
 
         return [
             'name' => $this->faker->name,
-            'email' => $this->faker->unique()->safeEmail,
-            'username' => $this->faker->userName,
-            'password' => $password,
+            'email' => $email,
+            'username' => $username,
+            'password' => bcrypt($password), // Assuming password needs to be hashed
             'role' => $this->faker->randomElement(['student', 'teacher', 'admin']),
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
@@ -43,4 +57,5 @@ class UserFactory extends Factory
             'updated_at' => now(),
         ];
     }
+
 }
