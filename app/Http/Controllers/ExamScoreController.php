@@ -161,4 +161,88 @@ public function update(Request $request, $id)
 
         return response()->json(null, 204);
     }
+
+
+    // Grading report cards
+    public function generateReport(Request $request)
+    {
+        $className = $request->input('class_name');
+        $examScores = ExamScore::where('class_name', $className)
+            ->orderBy('student_name')
+            ->get();
+
+        // Group exam scores by student
+        $students = [];
+        foreach ($examScores as $score) {
+            if (!isset($students[$score->student_id])) {
+                $students[$score->student_id] = [
+                    'student_name' => $score->student_name,
+                    'email' => $score->email,
+                    'scores' => [],
+                ];
+            }
+            $students[$score->student_id]['scores'][] = [
+                'subject_name' => $score->subject_name,
+                'score' => $score->score,
+                'grade' => $this->calculateGrade($score->score), // Calculate grade based on score
+            ];
+        }
+
+        // Determine division for each student
+        foreach ($students as &$student) {
+            $student['division'] = $this->calculateDivision($student['scores']);
+        }
+
+        return response()->json(['students' => array_values($students)]);
+    }
+
+    private function calculateGrade($score)
+    {
+        // Implement your grading logic here
+        if ($score >= 80) {
+            return 'D1';
+        } elseif ($score >= 70) {
+            return 'D2';
+        } elseif ($score >= 60) {
+            return 'C';
+        } elseif ($score >= 50) {
+            return 'E';
+        } else {
+            return 'F';
+        }
+    }
+
+    private function calculateDivision($scores)
+    {
+        // Determine if student passes in Division 1, 2, 3 or fails based on their grades
+        $div1Count = 0;
+        $div2Count = 0;
+        $div3Count = 0;
+        $failCount = 0;
+
+        foreach ($scores as $subject) {
+            $grade = $subject['grade'];
+            if ($grade === 'D1') {
+                $div1Count++;
+            } elseif ($grade === 'D2') {
+                $div2Count++;
+            } elseif ($grade === 'C') {
+                $div3Count++;
+            } elseif ($grade === 'E' || $grade === 'F') {
+                $failCount++;
+            }
+        }
+
+        if ($div1Count > 0) {
+            return 'Division 1';
+        } elseif ($div2Count > 0) {
+            return 'Division 2';
+        } elseif ($div3Count > 0) {
+            return 'Division 3';
+        } else {
+            return 'Failed';
+        }
+    }
+
+
 }

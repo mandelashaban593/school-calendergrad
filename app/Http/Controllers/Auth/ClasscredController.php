@@ -25,14 +25,26 @@ class ClasscredController extends Controller
         return response()->json(['message' => 'Class saved successfully'], 201)->header('Referrer-Policy', 'no-referrer');
     }
 
+    // public function getClassNames(Request $request)
+    // {
+    //     // Fetch class names from the database using pluck('name')
+    //     $classNames = ClassModel::pluck('name');
+    
+    //     // Return the class names as JSON response
+    //     return response()->json($classNames);
+    // }
+
     public function getClassNames(Request $request)
     {
-        // Fetch class names from the database using pluck('name')
-        $classNames = ClassModel::pluck('name');
-    
+        // Fetch class names with both id and name columns
+        $classNames = ClassModel::select('id', 'name')->get();
+        \Log::info('Classes details: ' . $classNames);
+        
         // Return the class names as JSON response
         return response()->json($classNames);
     }
+
+
     
     public function getClasses()
     {

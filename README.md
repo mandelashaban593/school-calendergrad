@@ -27,6 +27,7 @@ DB_PASSWORD=
 
 ```
 php artisan serve
+
 ```
 
 # Connect with Us
@@ -35,6 +36,22 @@ php artisan serve
 -   [Twitter](https://twitter.com/techvblogs)
 -   [Facebook](https://facebook.com/techvblogs)
 php artisan make:migration create_attendance_table
+php artisan make:seeder LessonsTableSeeder  - create seeder class
+php artisan db:seed --class=LessonsTableSeeder - execute to populate the db table called lessons
+
+php artisan make:factory UserFactory --model=User  - Create User factory
+php artisan make:seeder UsersTableSeeder  - create seeder class
+php artisan db:seed --class=UsersTableSeeder - execute to populate the db table called users
+
+Login credentials
+    Admin
+	Username daddyshaban593@gmail.com  or mandelashaban593@gmail.com
+	password simple100
+	
+
+	Teacher 
+	Username shabanmandela593@gmail.com 
+	password simple100
 
 <?php
 
@@ -85,7 +102,7 @@ php artisan make:request UserRequest
 
 php artisan make:request ExamScoreRequest
 
-php artisan make:request AttendanceRequest
+php artisan make:request ClassRequest
 
 
 NOTE(PASSPORT -CHATGPT):how to install and configure password steps in laravel

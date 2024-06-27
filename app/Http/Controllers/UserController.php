@@ -1,23 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash; // Import Hash facade for password hashing
 
 class UserController extends Controller
 {
+
+    
     public function index(Request $request)
     {
         $users =  User::paginate($request->input('per_page', 10));
         return response()->json($users);
     }
-
+    
     public function users(Request $request)
     {
         try {
             $this->validate($request, [
-                'username' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users',
                 'password' => 'required|string|min:8',
                 'email' => 'required|string|email|max:255|unique:users',
                 'role' => 'required|string',
@@ -29,8 +33,6 @@ class UserController extends Controller
                 'joining_date' => 'required|date',
                 'department_id' => 'required|integer',
             ]);
-   
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['error' => $e->errors()], 422);
         }
@@ -46,7 +48,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         try {
             $this->validate($request, [
-                'username' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users,username,' . $user->id,
                 'password' => 'nullable|string|min:8',
                 'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
                 'role' => 'required|string',
@@ -63,6 +65,9 @@ class UserController extends Controller
         }
 
         $data = $request->all();
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']); // Hash the password if present
+        }
         $user->update($data);
         return response()->json($user);
     }
@@ -95,7 +100,18 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    public function getTeachers(Request $request)
+    {
+        $role = $request->get('role', ''); // Get the 'role' query parameter
 
-    
+        // Query users based on role
+        $users = User::where('role', $role)->get();
+
+        return response()->json($users);
+    }
+
+
+
+
 
 }
